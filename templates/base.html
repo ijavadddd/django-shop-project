@@ -1,0 +1,77 @@
+{% load static %}
+{% load render_partial %}
+{% comment %} {% load jformat %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>	
+	{% include 'includes/head.html' %}
+	{% block title %}
+		<title>فروشگاه درسمن</title>
+	{% endblock %}
+</head>
+
+<body>
+	{% include 'includes/messages.html' %}
+
+	<!-- site -->
+	<div class="site">
+
+		{% include 'includes/navbar.html' %}
+
+			{% block content %}{% endblock %}
+
+		{% include 'includes/footer.html' %}
+
+	</div>
+	<!-- site / end -->
+</body>
+{% block script %}{% endblock %}
+
+<script type="text/javascript">
+$('.add-likebutton').click(function(){
+var product_id;
+product_id = $(this).attr("data-productid");
+
+
+$.ajax(
+{
+	type:"GET",
+	url: "{% url 'product:add_to_favorites' %}",
+
+	data:{
+			product_id: product_id
+	},
+	success: function( data ) 
+	{	
+		$( '#like-'+  product_id ).removeClass('add-likebutton');
+		$( '#like-'+  product_id ).addClass('text-danger remove-likebutton');
+		
+	}
+ })
+});
+
+$('.remove-likebutton').click(function(){
+	var product_id;
+	product_id = $(this).attr("data-productid");
+	
+	
+	$.ajax(
+	{
+		type:"GET",
+		url: "{% url 'product:remove_from_favorites' %}",
+	
+		data:{
+				product_id: product_id
+		},
+		success: function( data ) 
+		{	
+			$( '#like-'+  product_id ).removeClass('remove-likebutton text-danger');
+			$( '#like-'+  product_id ).addClass('add-likebutton');
+
+		}
+	 })
+});
+
+</script>
+</html>

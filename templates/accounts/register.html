@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">خانه</a>
+									/
+								</li>
+								<li class="breadcrumb-item">
+									<a href="">حساب کاربری</a>
+									/
+								</li>
+								<li class="active" aria-current="page"> ایجاد حساب کاربری</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title d-flex justify-content-center">
+						<h1>ایجاد حساب کاربری جدید</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row d-flex justify-content-center">
+						<div class="col-md-6 d-flex mt-4 mt-md-0">
+							<div class="card flex-grow-1 mb-0">
+								<div class="card-body">
+									<h3 class="card-title">ثبت نام</h3>
+									<form method="post">
+										{% csrf_token %}
+										<div class="form-group">
+											<label for="id_first_name">نام</label>
+											{{ form.first_name}}
+											<p class="text-danger">{{ form.errors.first_name.0 }}</p>
+										</div>
+										<div class="form-group">
+											<label for="id_last_name">نام خانوادگی</label>
+											{{ form.last_name }}
+											<p class="text-danger">{{ form.errors.last_name.0 }}</p>
+										</div>
+										<div class="form-group">
+											<label for="id_phone_number">تلفن همراه</label>
+											{{ form.phone_number }}
+											<p class="text-danger">{{ form.errors.phone_number.0 }}</p>
+										</div>
+										<div class="form-group">
+											<label for="id_password">رمز عبور</label>
+											{{ form.password }}
+											<p class="text-danger">{{ form.errors.password.0 }}</p>
+										</div>
+										<div class="form-group">
+											<label for="id_confirm_password">تایید رمز عبور</label>
+											{{ form.confirm_password }}
+											<p class="text-danger">{{ form.errors.confirm_password.0 }}</p>
+										</div>
+										<button type="submit" class="btn btn-primary mt-4">ثبت نام</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}

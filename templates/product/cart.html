@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">خانه</a>
+									/
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">سبد خرید</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>سبد خرید</h1></div>
+				</div>
+			</div>
+			<div class="cart block">
+				<div class="container">
+					<table class="cart__table cart-table">
+						<thead class="cart-table__head">
+							<tr class="cart-table__row">
+								<th class="cart-table__column cart-table__column--image">تصویر</th>
+								<th class="cart-table__column cart-table__column--product">محصول</th>
+								<th class="cart-table__column cart-table__column--price">قیمت</th>
+								<th class="cart-table__column cart-table__column--quantity">تعداد</th>
+								<th class="cart-table__column cart-table__column--total">جمع کل</th>
+								<th class="cart-table__column cart-table__column--remove"></th>
+							</tr>
+						</thead>
+						<tbody class="cart-table__body">
+							{% if not cart.empty %}
+								{% for product in cart %}
+								<tr class="cart-table__row">
+									<td class="cart-table__column cart-table__column--image">
+										<a href="{{ product.get_absolute_url }}" target='_blank'><img src="{{ MEDIA_URL }}{{ product.cover_img}}" alt=""></a>
+									</td>
+									<td class="cart-table__column cart-table__column--product">
+										<a href="{{ product.get_absolute_url }}" target='_blank' class="cart-table__product-name">
+											{{ product.title }}
+										</a>
+										{% if product.color %}
+										<ul class="cart-table__options">
+											<li>رنگ: {{ product.color }}</li>
+										</ul>
+										{% elif product.attribute %}
+										<ul class="cart-table__options">
+											<li>ویژگی: {{ product.attribute }}</li>
+										</ul>
+										{% endif %}
+									</td>
+									<td class="cart-table__column cart-table__column--price" data-title="قیمت">{{ product.price|intcomma:False }} تومان</td>
+									<td class="cart-table__column cart-table__column--quantity" data-title="تعداد">
+									<input type="hidden" id="price-id" value="{{ product.price_id }}" data-count="{{ product.stock_count}} "></input>
+										<div class="input-number">
+											<input class="form-control input-number__input" id="product-quantity" type="number" min="1" value="{{ product.quantity }}">
+											<div class="input-number__add" data-productquantity=""></div>
+											<div class="input-number__sub"></div>
+										</div>
+									</td>
+                                        <td class="cart-table__column cart-table__column--total" data-title="جمع کل">{{ product.total|intcomma:False }} تومان</td>
+									<td class="cart-table__column cart-table__column--remove">
+										<button type="button" class="btn btn-light btn-sm btn-svg-icon remove-from-cart" data-productid="{{ product.product_id }}" data-priceid="{{ product.price_id }}">
+											<i class="fa fa-trash"></i>
+										</button>
+									</td>
+								</tr>
+								{% endfor %}
+							{% else %}
+							<tr>
+								<td colspan="6" class="bg-warning text-center p-2">
+									 محصولی در سبد خرید شما موجود نیست
+								</td>
+								</tr>
+							{% endif%}
+						</tbody>
+					</table>
+					<div class="cart__actions">
+						<form class="cart__coupon-form">
+							<label for="input-coupon-code" class="sr-only">رمز عبور</label>
+							<input type="text" class="form-control" id="input-coupon-code" placeholder="کد تخفیف">
+							<button type="submit" class="btn btn-primary">اعمال کد تخفیف</button>
+						</form>
+						<div class="cart__buttons"><a href="index.html" class="btn btn-light">ادامه خرید</a> <a href="" class="btn btn-primary cart__update-button">به روز رسانی سبد</a></div>
+					</div>
+					<div class="row justify-content-end pt-5">
+						<div class="col-12 col-md-7 col-lg-6 col-xl-5">
+							<div class="card">
+								<div class="card-body">
+									<h3 class="card-title">مجموع سبد</h3>
+									<table class="cart__totals">
+										<thead class="cart__totals-header">
+											{% if cart %}
+											<tr>
+												<th>جمع جزء</th>
+												<td>{{ cart.total_price|intcomma:False }} تومان</td>
+											</tr>
+											{% endif %}
+										</thead>
+										<tbody class="cart__totals-body">
+											<tr>
+												<th>حمل و نقل</th>
+												<td>25,000 تومان
+													<div class="cart__calc-shipping"><a href="#">محاسبه هزینه</a></div>
+												</td>
+											</tr>
+											<tr>
+												<th>مالیات</th>
+												<td>0 تومان</td>
+											</tr>
+										</tbody>
+										<tfoot class="cart__totals-footer">
+											<tr>
+												<th> جمع کل: {{ cart.total_price|intcomma:False }}</th>
+												<td> تومان</td>
+											</tr>
+										</tfoot>
+									</table><a class="btn btn-primary btn-xl btn-block cart__checkout-button" href="{% url 'product:checkout' %}">پرداخت</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+
+{% block script %}
+<script>
+	$('.input-number__add').click(function(){
+		var product_quantity = document.getElementById('product-quantity')
+		var price_max_count = document.getElementById('price-id')
+	
+		if (product_quantity.value < price_max_count.dataset.count ){
+			product_quantity.value = Number(product_quantity.value) + 1
+	
+		}
+	});
+	
+	$('.input-number__sub').click(function(){
+		var product_quantity = document.getElementById('product-quantity')
+		if (product_quantity.value!=1){
+			product_quantity.value = Number(product_quantity.value) - 1
+		}
+	});
+
+	$('.remove-from-cart').click(function(){
+		var product_id = $(this).attr('data-productid');
+		var price_id = $(this).attr('data-priceid');
+	
+		$.ajax(
+		{
+			type:"POST",
+			url: "{% url 'product:remove_from_card' %}",
+			
+			data:{
+				product_id: product_id,
+				price_id: price_id,
+				csrfmiddlewaretoken: '{{ csrf_token }}',
+				dataType: "json",
+			},
+			success: function(data){
+
+			}
+		})
+
+	});
+</script>
+{% endblock %}

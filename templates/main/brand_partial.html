@@ -1,0 +1,19 @@
+
+    <!-- .block-brands -->
+
+    <div class="block block-brands">
+        <div class="container">
+            <div class="block-brands__slider">
+                <div class="owl-carousel">
+
+                    {% for brand in brands %}
+                        <div class="block-brands__item">
+                            <a href=""><img src="{{ brand.img.url }}" alt="{{ brand.title }}"></a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .block-brands / end -->

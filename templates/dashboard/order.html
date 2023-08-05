@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'main:home' %}">خانه</a>
+									/
+								</li>
+								<li class="breadcrumb-item"><a href="">داشبورد</a>
+
+								</li>
+
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>حساب کاربری</h1></div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								<h4 class="account-nav__title">ناوبری</h4>
+								<ul>
+									<li class="account-nav__item"><a href="{% url 'dashboard:dashboard' %}">داشبورد</a></li>
+									<li class="account-nav__item"><a href="{% url 'dashboard:profile' %}">ویرایش پروفایل</a></li>
+									<li class="account-nav__item"><a href="{% url 'dashboard:addresses' %}">آدرس های شما</a></li>
+									<li class="account-nav__item account-nav__item--active"><a href="{% url 'dashboard:orders' %}">سفارشات شما</a></li>
+									<li class="account-nav__item"><a href="{% url 'dashboard:returned_orders' %}">سفارشات مرجوعی</a></li>
+									<li class="account-nav__item"><a href="{% url 'dashboard:password_change' %}">تغییر رمز عبور</a></li>
+									<li class="account-nav__item"><a href="{% url 'accounts:logout' %}">خروج</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="card">
+								<div class="card-header">
+									<h5>جزییات سفارش</h5></div>
+								<div class="card-divider"></div>
+								<div class="card-body">
+									<div class="row no-gutters">
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">نام:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_name }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">شماره تلفن:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_phone_number }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">کد رهگیری:</div>
+											{% if order.tracking_code %}
+												<div class="address-card__row-content"><span class="ltr_text">{{ order.tracking_code }}</span></div>
+											{% else %}
+												<div class="address-card__row-content"><span class="ltr_text">در دسترس نیست</span></div>
+											{% endif %}
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">استان:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_state }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">شهر:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_city }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">آدرس:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_address }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">کد پستی:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_postal_code }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">توضیحات اضافی:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.receiver_extra_data }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">هزینه ارسال پستی:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.post_price }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">روش پرداخت:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.pay_method }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">وضعیت پرداخت:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.pay_status }}</span></div>
+										</div>
+										<div class="col-12 row">
+											<div class="mr-2" style="color: #999;">وضعیت ارسال:</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ order.status }}</span></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+						
+		<!-- site__body / end -->
+{% endblock %}

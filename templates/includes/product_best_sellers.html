@@ -1,0 +1,169 @@
+{% load is_new %}
+{% load lower_price %}
+
+
+<!-- .block-products -->
+    <div class="block block-products block-products--layout--large-last">
+        <div class="container">
+            <div class="block-header">
+                <h3 class="block-header__title">پرفروش ترین ها</h3>
+                <div class="block-header__divider"></div>
+            </div>
+            <div class="block-products__body">
+                
+            {% if products %}
+                <div class="block-products__list">
+                {% for product in products %}
+                    
+                    <div class="block-products__list-item">
+                        <div class="product-card">
+                            <div class="product-card__badges-list">
+                                {% if product|is_new %}
+                                    <div class="product-card__badge product-card__badge--sale">جدید</div>
+                                {% endif %}
+                            </div>
+                            <div class="product-card__image">
+                                <a href="{{ product.get_absolute_url }}" style="display:flex; justify-content:center;">
+                                    <img src="{{ MEDIA_URL }}{{ product.cover_img }}" alt="" style="max-height: 100%; width:auto; ">
+                                </a>
+                            </div>
+                            <div class="product-card__info">
+                                <div class="product-card__name">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        {{ product.title }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-card__actions">
+                                {% if product.available %}
+                                    <div class="product-card__availability">موجودی: 
+                                        <span class="text-success">موجود
+                                        در انبار</span>
+                                    </div>
+                                    <div class="product-card__prices">
+                                        {% with price_item=product|lower_price:"price" %}
+                                            {% if price_item.discount_percent %}
+                                            <span class="product-card__new-price">{{ price_item.real_price }}
+                                                تومان</span> 
+                                                <span class="product-card__old-price">{{ price_item.price }}
+                                                تومان</span>
+                                            {% else %}
+                                            <span class="product-card__new-price text-dark">{{ price_item.price }}
+                                                تومان</span>
+                                            {% endif %}
+                                        {% endwith %}
+                                        </div>
+
+                                {% else %}
+                                        <div class="product-card__availability">موجودی: 
+                                            <span class="text-danger">ناموجود
+                                                در انبار</span>
+                                            </div>
+                                        <div class="product-card__prices">
+                                            <span class="text-danger">ناموجود</span>
+                                        </div>
+                                {% endif %}
+                                <div class="product-card__buttons">
+                                    <button class="btn btn-primary product-card__addtocart" type="button">
+                                        افزودن به سبد
+                                    </button>
+                                    <button
+                                        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+                                        type="button">
+                                        <i class="fa fa-heart"></i>
+                                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+                                    </button>
+                                    <button
+                                        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+                                        type="button">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+                
+            {% if old_product %}
+                <div class="block-products__featured">
+                    <div class="block-products__featured-item">
+                        <div class="product-card">
+
+                            <div class="product-card__badges-list">
+                                {% if old_product.0|is_new %}
+                                    <div class="product-card__badge product-card__badge--new">جدید</div>
+                                {% endif %}
+                                </div>
+                            <div class="product-card__image">
+                                <a href="{{ product.get_absolute_url }}" style="display:flex; justify-content:center;">
+                                    <img src="{{ MEDIA_URL }}{{ old_product.0.cover_img }}" alt="" style="max-height: 100%; width:auto;">
+                                </a>
+                            </div>
+                            <div class="product-card__info">
+                                <div class="product-card__name">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        {{ old_product.0.title }}
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="product-card__actions">
+                                {% if old_product.0.available %}
+                                <div class="product-card__availability">موجودی: 
+                                    <span class="text-success">موجود
+                                    در انبار</span>
+                                </div>
+                                <div class="product-card__prices">
+                                    {% with price_item=old_product.0|lower_price:"price" %}
+                                        {% if price_item.discount_percent %}
+                                        <span class="product-card__new-price">{{ price_item.real_price }}
+                                            تومان</span> 
+                                            <span class="product-card__old-price">{{ price_item.price }}
+                                            تومان</span>
+                                        {% else %}
+                                        <span class="product-card__new-price text-dark">{{ price_item.price }}
+                                            تومان</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                    </div>
+
+                                {% else %}
+                                        <div class="product-card__availability">موجودی: 
+                                            <span class="text-danger">ناموجود
+                                                در انبار</span>
+                                            </div>
+                                        <div class="product-card__prices">
+                                            <span class="text-danger">ناموجود</span>
+                                        </div>
+                                {% endif %}
+                            
+                                <div class="product-card__buttons">
+                                    <button class="btn btn-primary product-card__addtocart" type="button">
+                                        افزودن به سبد
+                                    </button>
+                                    <button
+                                        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+                                        type="button">
+                                        <i class="fa fa-heart"></i>
+                                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+                                    </button>
+                                    <button
+                                        class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+                                        type="button">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- .block-products / end -->
+    

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load render_partial %}
+{% load jalali_tags %}
+
+
+{% block content %}
+<!-- site__body -->
+<div class="site__body">
+    <!-- .block-slideshow -->
+    <div class="block-slideshow block-slideshow--layout--full block">
+        <div class="container">
+            <div class="row">
+                {% render_partial 'main:slider_partial' %}
+            </div>
+        </div>
+    </div>
+    <!-- .block-slideshow / end -->
+    <!-- .block-features -->
+    <div class="block block-features block-features--layout--boxed">
+        <div class="container">
+            <div class="block-features__list">
+                <div class="block-features__item">
+                    <div class="block-features__icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <div class="block-features__content">
+                        <div class="block-features__title">ارسال رایگان</div>
+                        <div class="block-features__subtitle">ارسال رایگان برای خریدهای بالای ۳۰۰ هزار تومان</div>
+                    </div>
+                </div>
+                <div class="block-features__divider"></div>
+                <div class="block-features__item">
+                    <div class="block-features__icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <div class="block-features__content">
+                        <div class="block-features__title">پشتیبانی 24 ساعته</div>
+                        <div class="block-features__subtitle">پشتیبانی فروش و کیفیت هر لحظه در خدمت شما</div>
+                    </div>
+                </div>
+                <div class="block-features__divider"></div>
+                <div class="block-features__item">
+                    <div class="block-features__icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <div class="block-features__content">
+                        <div class="block-features__title">100% امن</div>
+                        <div class="block-features__subtitle">پرداخت های امن</div>
+                    </div>
+                </div>
+                <div class="block-features__divider"></div>
+                <div class="block-features__item">
+                    <div class="block-features__icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <div class="block-features__content">
+                        <div class="block-features__title">پیشنهادات جدید</div>
+                        <div class="block-features__subtitle">تخفیف تا 90%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .block-features / end -->
+    <!-- .block-products-carousel -->
+    {% render_partial 'main:product_special_offer_partial' %}
+    <!-- .block-products-carousel / end -->
+
+    <!-- .block-banner -->
+    <div class="block block-banner">
+        <div class="container">
+            <a href="" class="block-banner__body">
+                <div class="block-banner__image block-banner__image--desktop"
+                    style="background-image: url('{{ MEDIA_URL }}images/banners/bg_banner.webp')"></div>
+                <div class="block-banner__image block-banner__image--mobile"
+                    style="background-image: url('{{ MEDIA_URL }}images/banners/bg_banner.webp')"></div>
+                <div class="block-banner__title">
+                    کالای تبلیغاتی
+                    <br class="block-banner__mobile-br">
+                </div>
+                <div class="block-banner__text">بهترین کالا برای خرید شما</div>
+                <div class="block-banner__button"><span class="btn btn-sm btn-primary">هم اکنون بخرید</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- .block-banner / end -->
+    <!-- .block-products -->
+
+
+{#    {% render_partial 'main:best_sellers_product_partial' %}#}
+
+    <!-- .block-categories -->
+    {% render_partial 'main:popular_categories_partial' %}
+    <!-- .block-categories / end -->
+    
+    {% render_partial 'main:newset_product_partial' %}
+
+    <!-- .block-posts -->
+   
+    {% render_partial 'blog:latest_posts' %}
+
+    <!-- .block-posts / end -->
+    {% render_partial 'main:brand_partial' %}
+</div>
+<!-- site__body / end -->
+{% endblock content %}

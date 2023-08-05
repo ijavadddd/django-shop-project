@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load lower_price %}
+{% load is_new %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="{% url 'main:home' %}">خانه</a>
+									/
+								</li>
+								<li class="breadcrumb-item">
+									<a href="#">محصولات</a>
+								</li>
+								
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>{{ category.title }}</h1></div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="shop-layout shop-layout--sidebar--start">
+					<div class="shop-layout__sidebar">
+						<div class="block block-sidebar">
+							<form>
+							<div class="block-sidebar__item">
+								<div class="widget-filters widget" data-collapse data-collapse-opened-class="filter--opened">
+									<h4 class="widget__title">فیلترها</h4>
+									<div class="widget-filters__list">
+
+											<div class="widget-filters__item">
+												<div class="filter filter--opened" data-collapse-item>
+													<button type="button" class="filter__title" data-collapse-trigger>دسته ها
+														<svg class="filter__arrow" width="12px" height="7px">
+															<use xlink:href="images/sprite.svg#arrow-rounded-down-12x7"></use>
+														</svg>
+													</button>
+													<div class="filter__body" data-collapse-content>
+														<div class="filter__container">
+															<div class="filter-categories">
+																<ul class="filter-categories__list">
+																{% if category.parent.children.all %}
+																	
+																	{% for sub_category in category.parent.children.all %}
+																		{% if sub_category == category %}
+																			<li class="filter-categories__item filter-categories__item--current">
+																				<a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+																				<div class="filter-categories__counter">{{ category.products_count }}</div>
+																			</li>
+																		{% else %}
+																			<li class="filter-categories__item filter-categories__item--parent">
+																				<svg class="filter-categories__arrow" width="6px" height="9px">
+																					<use xlink:href="images/sprite.svg#arrow-rounded-left-6x9"></use>
+																				</svg> <a href="{{ sub_category.get_absolute_url }}">{{ sub_category.title }}</a>
+																				<div class="filter-categories__counter">{{ sub_category.products.all.count }}</div>
+																			</li>
+																		{% endif %}
+																	{% endfor %}
+
+																{% else %}
+																		<li class="filter-categories__item filter-categories__item--current">
+																			<a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+																			<div class="filter-categories__counter">{{ category.products_count }}</div>
+																		</li>
+																	{% for sub_category in category.children.all %}
+																		<li class="filter-categories__item filter-categories__item--parent">
+																			<svg class="filter-categories__arrow" width="6px" height="9px">
+																				<use xlink:href="images/sprite.svg#arrow-rounded-left-6x9"></use>
+																			</svg> <a href="{{ sub_category.get_absolute_url }}">{{ sub_category.title }}</a>
+																			<div class="filter-categories__counter">{{ sub_category.products.all.count }}</div>
+																		</li>
+																	{% endfor %}
+																{% endif %}
+
+
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										<div class="widget-filters__item">
+											<div class="filter filter--opened" data-collapse-item>
+												<button type="button" class="filter__title" data-collapse-trigger>قیمت
+													<svg class="filter__arrow" width="12px" height="7px">
+														<use xlink:href="images/sprite.svg#arrow-rounded-down-12x7"></use>
+													</svg>
+												</button>
+												<div class="filter__body" data-collapse-content>
+													<div class="filter__container">
+														<div class="filter-price" data-min="5000" data-max="150000" data-from="25000" data-to="110000">
+															<div class="filter-price__slider"></div>
+															<div class="filter-price__title"><span class="filter-price__min-value"></span> تومان - <span class="filter-price__max-value"></span> تومان</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										{% for attribute in category.attributes.all %}
+											<div class="widget-filters__item">
+												<div class="filter filter--opened" data-collapse-item>
+													<button type="button" class="filter__title" data-collapse-trigger>{{ attribute.title.title }}
+														<svg class="filter__arrow" width="12px" height="7px">
+															<use xlink:href="images/sprite.svg#arrow-rounded-down-12x7"></use>
+														</svg>
+													</button>
+													<div class="filter__body" data-collapse-content>
+														<div class="filter__container">
+															{% if attribute.type != 'color' %}
+																<div class="filter-list">
+																	<div class="filter-list__list">
+
+																		{% for attribute_value in attribute.values.all %}
+																			<label class="filter-list__item">
+																				<span class="filter-list__input input-check">
+																					<span class="input-check__body">
+																						<input class="input-check__input" name="attribute[{{ attribute.id }}][{{ attribute_value.id }}]" value="{{ attribute_value.value }}" type="checkbox" id="{{ attribute.id }}_{{ attribute_value.id }}">
+																						<span class="input-check__box"></span>
+																						<svg class="input-check__icon" width="9px" height="7px">
+																							<use xlink:href="images/sprite.svg#check-9x7"></use>
+																						</svg>
+																					</span>
+																				</span>
+																				<span class="filter-list__title">{{ attribute_value.value }}</span>
+																				<span class="filter-list__counter">{{ attribute_value.products.all.count }}</span>
+																			</label>
+																		{% endfor %}
+
+																	</div>
+																</div>
+															{% else %}
+																<div class="filter-color">
+																	<div class="filter-color__list">
+																		{% for product in products %}
+																			{% for color in product.prices.all %}
+																				<label class="filter-color__item">
+																					<span class="filter-list__title filter-color__check input-check-color input-check-color--white" style="color: {{ color.main_attribute.value2 }};">
+																						<label class="input-check-color__body" style="width:22px;">
+																							<input class="input-check-color__input" type="checkbox">
+																							<span class="input-check-color__box" style="width:22px;"></span>
+																							<svg class="input-check-color__icon" width="12px" height="9px">
+																								<use xlink:href="images/sprite.svg#check-12x9"></use>
+																							</svg>
+																							<span class="input-check-color__stick"></span>
+																						</label>
+																					</span>
+																				</label>
+																			{% endfor %}
+																		{% endfor %}
+																	</div>
+																</div>
+															{% endif %}
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+
+									</div>
+									<div class="widget-filters__actions d-flex">
+										<button class="btn btn-primary btn-sm filter-btn">فیلتر</button>
+										<button class="btn btn-secondary btn-sm">بازنشانی</button>
+									</div>
+								</div>
+							</div>
+							</form>
+						</br>
+							<div class="block-sidebar__item d-none d-lg-block">
+								<div class="widget-products widget">
+									<h4 class="widget__title">محصولات جدید</h4>
+
+									<div class="widget-products__list">
+										
+										{% for new_product in newest_related_product%}
+										<div class="widget-products__item">
+											<div class="widget-products__image">
+												<a href="product.html">
+													<img src="{{ MEDIA_URL}}{{ new_product.cover_img }}" alt="">
+												</a>
+											</div>
+											<div class="widget-products__info">
+												<div class="widget-products__name"><a href=" {{ new_product.get_absolute_url }}">{{ new_product.title }}</a></div>
+												{% with price_item=new_product|lower_price:"price" %}
+													{% if price_item.stock_count == 0 or not price_item %}
+														<div class="product-card__prices text-danger">ناموجود</div>
+													{% else %}
+														<div class="widget-products__prices">{{ price_item.price }}&nbsp;تومان</div>
+													{% endif %}
+												{% endwith %}
+											</div>
+										</div>
+										{% endfor %}
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-layout__content">
+						<div class="block">
+							<div class="products-view">
+								<div class="products-view__options">
+									<div class="view-options">
+
+										<div class="view-options__legend">در حال نمایش {{ products.start_index }}-{{ products.end_index }}  از {{ products.paginator.count }} محصول</div>
+										<div class="view-options__divider"></div>
+										<div class="view-options__control">
+											<label for="">مرتب‌سازی بر اساس</label>
+											<div>
+												<select class="form-control form-control-sm" name="" id="">
+													<option value="">پیش فرض</option>
+													<option value="">ارزانترین</option>
+													<option value="">گرانترین</option>
+													<option value="">محبوبترین</option>
+													<option value="">نام (صعودی)</option>
+													<option value="">نام (نزولی)</option>
+												</select>
+											</div>
+										</div>
+										<div class="view-options__control">
+											<label for="">نمایش</label>
+											<div>
+												<select class="form-control form-control-sm" name="" id="">
+													<option value="">12</option>
+													<option value="">24</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="products-view__list products-list" data-layout="grid-3-sidebar" data-with-features="false">
+									<div class="products-list__body">
+										{% for product in products %}
+											<div class="products-list__item">
+												<div class="product-card">
+													{% if product|is_new %}
+														<div class="product-card__badges-list">
+															<div class="product-card__badge product-card__badge--new">جدید</div>
+														</div>
+													{% endif %}
+													<div class="product-card__image">
+														<a href="{{ product.get_absolute_url }}" style="display:flex; justify-content:center;">
+															<img src="{{ MEDIA_URL }}{{ product.cover_img }}" alt="" style="max-height: 100%; width:auto; ">
+														</a>
+													</div>
+													<div class="product-card__info">
+														<div class="product-card__name"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></div>
+
+													</div>
+													<div class="product-card__actions">
+														<div class="product-card__availability">موجودی: 
+															<span class="text-success">موجود در انبار</span>
+														</div>
+														{% with price_item=product|lower_price:"price" %}
+															{% if price_item.stock_count == 0 or not price_item %}
+																<div class="product-card__prices text-danger">ناموجود</div>
+															{% else %}
+																<div class="product-card__prices">{{ price_item.price }}&nbsp;تومان</div>
+															{% endif %}
+														{% endwith %}
+														<div class="product-card__buttons d-flex">
+															<button class="btn btn-primary product-card__addtocart" type="button">افزودن به سبد</button>
+															<button class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">افزودن به سبد</button>
+															{% if product in request.user.favorites.all %}
+															<a class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist d-flex justify-content-center remove-likebutton text-danger" id="like-{{ product.id }}" data-productid="{{ product.id }}" type="button">
+																<i class="fa fa-heart"></i>
+															</a>
+															{% else %}
+															<a class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist d-flex justify-content-center add-likebutton" id="like-{{ product.id }}" data-productid="{{ product.id }}" type="button">
+																<i class="fa fa-heart"></i>
+															</a>
+															{% endif %}
+																<span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+																<button
+																	class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist d-flex justify-content-center"
+																	type="button">
+																	<i class="fa fa-shopping-cart"></i>
+																	<span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+																</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+								{% if products %}
+								<div class="products-view__pagination my-2">
+									<ul class="pagination justify-content-center">
+                                        {% if products.has_previous %}
+                                        <li class="page-item">
+											<a class="page-link page-link--with-arrow" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+												<i class="fas fa-angle-right"></i>
+											</a>
+										</li>
+                                        <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">{{ products.previous_page_number }}</a></li>
+                                        {% endif %}
+										<li class="page-item active"><a class="page-link" href="">{{ products.number }}<span class="sr-only">(کنونی)</span></a></li>
+                                        {% if products.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ products.next_page_number }}">{{ products.next_page_number }}</a>
+                                            </li>
+                                            <li class="page-item">
+											<a class="page-link page-link--with-arrow" href="?page={{ products.paginator.num_pages }}" aria-label="Next">
+												<i class="fas fa-angle-left"></i>
+											</a>
+										</li>
+                                        {% endif %}
+									</ul>
+								</div>
+                                {% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}
+{% block script %}
+{% endblock %}

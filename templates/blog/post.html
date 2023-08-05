@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'main:home' %}">خانه</a>
+									/
+								</li>
+								
+								<li class="breadcrumb-item active" aria-current="page">مقاله</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-md-12 col-lg-9 col-xl-8">
+						<div class="block post post--layout--full">
+							<div class="post__header post-header post-header--layout--full">
+								
+								<h1 class="post-header__title">{{ post.title }}</h1>
+								<div class="post-header__meta">
+									<div class="post-header__meta-item">توسط <a href="">{{ post.author.first_name }}&nbsp;{{ post.author.last_name }}</a></div>
+									<div class="post-header__meta-item"><a href="">{{ post.created_at|date:"Y M d" }}</a></div>
+									<div class="post-header__meta-item"><a href="">4 دیدگاه</a></div>
+								</div>
+							</div>
+							<div class="post__featured">
+								<a href=""><img src="../../../../Downloads/DarsmanShopTemplate/images/posts/post.jpg" alt=""></a>
+							</div>
+							<div class="post__content typography typography--expanded">{{ post.content|safe }}</div>
+							<div class="post__footer">
+								<div class="post__tags-share-links">
+									<div class="post__tags tags">
+										<div class="tags__list">
+											<a href="">برچسب</a> 
+											<a href="">برچسب</a> 
+											<a href="">برچسب</a> 
+											<a href="">برچسب</a> 
+											<a href="">برچسب</a> 
+										</div>
+									</div>
+									<div class="post__share-links share-links">
+										<ul class="share-links__list">
+											<li class="share-links__item share-links__item--type--like">
+												<a href="">اشتراک گذاری</a>
+											</li>
+											<li class="share-links__item share-links__item--type--like">
+												<a href="">اشتراک گذاری</a>
+											</li>
+
+										</ul>
+									</div>
+								</div>
+								<div class="post-author">
+									<div class="post-author__avatar">
+										<a href=""><img src="{% static '/images/avatars/avatar-1.jpg' %}" alt=""></a>
+									</div>
+									<div class="post-author__info">
+										<div class="post-author__name">نویسنده : <a href="">{{ post.author.first_name }}&nbsp;{{ post.author.last_name }}</a></div>
+										<div class="post-author__about">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}

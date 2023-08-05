@@ -1,0 +1,7 @@
+{% for message in messages %}
+    {% if message %}
+        <p class="alert alert-{{ message.tags }} m-0 py-2 text-center">{{ message }}</p>
+    {% endif %}
+{% endfor %}
+<p id="popup-message" class="alert alert-success w-100 text-center text-white m-0 p-0"></p>
+

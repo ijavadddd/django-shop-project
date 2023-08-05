@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jalali_tags %}
+
+
+{% block content %}
+<div class="site__body">
+	<div class="page-header">
+		<div class="page-header__container container">
+			<div class="page-header__breadcrumb">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'main:home' %}">خانه</a>
+							/
+						</li>
+						<li class="breadcrumb-item"><a href="">داشبورد</a>
+
+						</li>
+
+					</ol>
+				</nav>
+			</div>
+			<div class="page-header__title">
+				<h1>حساب کاربری</h1></div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-lg-3 d-flex">
+					<div class="account-nav flex-grow-1">
+						<h4 class="account-nav__title">ناوبری</h4>
+						<ul>
+							<li class="account-nav__item account-nav__item--active"><a href="{% url 'dashboard:dashboard' %}">داشبورد</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:profile' %}">ویرایش پروفایل</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:addresses' %}">آدرس های شما</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:orders' %}">سفارشات شما</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:returned_orders' %}">سفارشات مرجوعی</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:password_change' %}">تغییر رمز عبور</a></li>
+							<li class="account-nav__item"><a href="{% url 'accounts:logout' %}">خروج</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+					<div class="dashboard">
+						<div class="dashboard__profile card profile-card">
+							<div class="card-body profile-card__body">
+								<div class="profile-card__avatar"><img src="/static/images/avatars/avatar-2.jpg" alt=""></div>
+								<div class="profile-card__name">{{ request.user.first_name }}&nbsp;{{ request.user.last_name }}</div>
+								<div class="profile-card__email">{{ request.user.phone_number }}</div>
+								<div class="profile-card__edit"><a href="{% url 'dashboard:profile' %}" class="btn btn-secondary btn-sm">ویرایش پروفایل</a></div>
+							</div>
+						</div>
+						<div class="dashboard__address card address-card address-card--featured">
+							<div class="address-card__badge">آدرس </div>
+							{% if request.user.addresses.all %}
+								{% with address=request.user.addresses.all.0 %}
+								<div class="address-card__body">
+									<div class="address-card__name">{{ address.receiver_name }}</div>
+									<div class="address-card__row">{{ address.state }}،&nbsp;{{ address.city }}
+										<br>{{ address.address }}
+									</div>
+									<div class="mt-2 row">
+										<div class="w-50">
+											<div class="address-card__row-title">کدپستی</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ address.postal_code }}</span></div>
+										</div>
+										<div class="w-50">
+											<div class="address-card__row-title">شماره تلفن</div>
+											<div class="address-card__row-content"><span class="ltr_text">{{ address.receiver_phone_number }}</span></div>
+										</div>
+									</div>
+									<div class="mt-3">
+										<a href="{% url 'dashboard:addresses' %}" class="btn btn-dark btn-sm">دیگر آدرس ها</a>
+									</div>
+								{% endwith %}
+							{% else %}
+								<div class="profile-card__body h-100">
+									<p class="text-center">آدرسی موجود نیست</p>
+									<div class="profile-card__edit">
+										<a href="{% url 'dashboard:add_address' %}" class="btn btn-secondary btn-sm">ویرایش پروفایل</a>
+									</div>
+								</div>
+							{% endif %}
+							</div>
+						</div>
+						<div class="dashboard__orders card">
+							<div class="card-header">
+								<h5>سفارشات اخیر</h5></div>
+							<div class="card-divider"></div>
+							<div class="card-table">
+								<div class="table-responsive-sm">
+									<table>
+										<thead>
+											<tr>
+												<th>سفارش</th>
+												<th>تاریخ</th>
+												<th>وضعیت</th>
+												<th>جمع کل</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% if recently_orders %}
+												{% for order in recently_orders %}
+													<tr>
+														<td><a href="{{ order.get_absolute_url }}">#{{ order.order_id }}</a></td>
+														<td>{{ order.created_at|to_jalali:"%Y/%m/%d" }}</td>
+														<td>{{ order.status }}</td>
+														<td>{{ order.total_price }}&nbsp;برای&nbsp;{{ order.order_items.all.count }}&nbsp;محصول</td>
+													</tr>
+												{% endfor %}
+											{% else %}
+											<tr>
+												<td colspan="6" class="text-center" style="background-color: #f0f0f0">در ماه اخیر سفارشی نداشته اید،&nbsp;<a href="#">ببینم چیا داری</a></td>
+											</tr>
+											{% endif %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

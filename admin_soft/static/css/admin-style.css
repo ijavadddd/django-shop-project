@@ -1,0 +1,66 @@
+@font-face {
+	font-family: 'Yekan';
+	src: url( '../fonts/yekan.eot' );
+	src: url( '../fonts/yekan.eot?#iefix' ) format( 'embedded-opentype' ),
+		url( '../fonts/yekan.woff2' ) format( 'woff2' ),
+		url( '../fonts/yekan.woff' ) format( 'woff' ),
+		url( '../fonts/yekan.ttf' ) format( 'truetype' ),
+		url( '../fonts/yekan.svg#Yekan' ) format( 'svg' );
+	font-weight: normal;
+	font-style: normal;
+}
+.login-btn{
+	font-family: 'Yekan';
+}
+body{
+    min-height:100vh!important;
+}
+.search-input{
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+}
+*{
+    font-family: 'Yekan';
+}
+td p{
+    font-family: 'Yekan'!important;
+	text-align: center;
+}
+.list-card{
+    min-height: 45vh;;
+	margin: 7px 0 7px 20px;
+}
+.rtl{
+	direction: rtl;
+	text-align: right;
+}
+.yekan{
+    font-family: 'Yekan';
+}
+.form-check-input{
+	border: 1px solid #000;
+}
+th, td, .column-, .delete{
+	text-align: center!important;
+}
+.form-select{
+	padding-right: 26px;
+	box-sizing: border-box;
+}
+.original{
+	text-align: center;
+	width:85px;
+}
+.tabular_p_volt{
+	font-size:0.76rem;
+}
+.tabular{
+	margin-bottom: 10px;
+}
+#dropdownTable i{
+	text-align: left!important;
+	float: left!important;
+}
+.navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"]::after {
+	font-family: "Font Awesome 6 Pro"!important;
+}

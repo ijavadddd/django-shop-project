@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		<!-- site__body -->
+		<div class="site__body">
+			<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'main:home' %}">خانه</a>
+									/
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">دسته بندی محصولات</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>دسته بندی محصولات</h1>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="block">
+							<div class="block block--highlighted block-categories block-categories--layout--compact">
+								<div class="container">
+									<div class="block-categories__list">
+										{% for category in categories %}
+											<div class="block-categories__item category-card category-card--layout--compact">
+												<div class="category-card__body">
+													<div class="category-card__image">
+														<a href="">
+															<img src="{{ MEDIA_URL }}{{ category.cover_img }}" alt="">
+														</a>
+													</div>
+													<div class="category-card__content">
+														<div class="category-card__name">
+															{% if category.children.all %}
+																<a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+															{% else %}
+																<a href="{{ category.get_product_url }}">{{ category.title }}</a>
+															{% endif %}
+														</div>
+														<div class="category-card__all"><a href="">نمایش همه</a></div>
+														<div class="category-card__products">{{ category.products.all.count }}&nbsp;محصول</div>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- site__body / end -->
+{% endblock %}

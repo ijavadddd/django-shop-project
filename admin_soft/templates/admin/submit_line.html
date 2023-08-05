@@ -1,0 +1,32 @@
+{% load i18n admin_urls %}
+
+<div class="card submit_btn mt-2 bg-dark">
+    <div class="card-body">
+        {% block submit-row %}
+            {% if show_save %}
+                <button type="submit" name="_save" class="btn btn-sm btn-primary fs-6 yekan">{% trans 'Save' %}</button>
+            {% endif %}
+
+            {% if show_save_as_new %}
+                <button type="submit" name="_saveasnew" class="btn btn-sm btn-success fs-6 yekan">{% trans 'Save as new' %}</button>
+            {% endif %}
+
+            {% if show_save_and_add_another %}
+                <button type="submit" name="_addanother" class="btn btn-sm btn-info fs-6 yekan">{% trans 'Save and add another' %}</button>
+            {% endif %}
+
+            {% if show_save_and_continue %}
+                <button type="submit" name="_continue" class="btn btn-sm btn-warning fs-6 yekan">{% if can_change %}{% trans 'Save and continue editing' %}{% else %}{% trans 'Save and view' %}{% endif %}</button>
+            {% endif %}
+
+            {% if show_close %}
+                <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-sm btn-default fs-6 yekan">{% trans 'Close' %}</a>
+            {% endif %}
+
+            {% if show_delete_link and original %}
+                {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+                <a href="{% add_preserved_filters delete_url %}" class="btn btn-sm btn-danger fs-6 yekan">{% trans "Delete" %}</a>
+            {% endif %}
+        {% endblock %}
+    </div>
+</div>

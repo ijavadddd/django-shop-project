@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="site__body">
+	<div class="page-header">
+		<div class="page-header__container container">
+			<div class="page-header__breadcrumb">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'main:home' %}">خانه</a>
+							/
+						</li>
+						<li class="breadcrumb-item"><a href="">داشبورد</a>
+
+						</li>
+
+					</ol>
+				</nav>
+			</div>
+			<div class="page-header__title">
+				<h1>حساب کاربری</h1></div>
+		</div>
+	</div>
+	<div class="block">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-lg-3 d-flex">
+					<div class="account-nav flex-grow-1">
+						<h4 class="account-nav__title">ناوبری</h4>
+						<ul>
+							<li class="account-nav__item"><a href="{% url 'dashboard:dashboard' %}">داشبورد</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:profile' %}">ویرایش پروفایل</a></li>
+							<li class="account-nav__item account-nav__item--active"><a href="{% url 'dashboard:addresses' %}">آدرس های شما</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:orders' %}">سفارشات شما</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:returned_orders' %}">سفارشات مرجوعی</a></li>
+							<li class="account-nav__item"><a href="{% url 'dashboard:password_change' %}">تغییر رمز عبور</a></li>
+							<li class="account-nav__item"><a href="{% url 'accounts:logout' %}">خروج</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+					<div class="dashboard">
+						<div class="dashboard__orders card">
+							<div class="card-header row">
+								<h5 class="d-inline-block">آدرس های شما</h5>
+								<div class="topbar__spring"></div>
+								<a href="{% url 'dashboard:add_address' %}" class="btn btn-dark">افزودن آدرس جدید</a>
+							</div>
+							<div class="card-divider"></div>
+							<div class="card-table">
+								<div class="table-responsive-sm">
+									<table>
+										<thead>
+											<tr class="text-center">
+												<th>نام گیرنده</th>
+												<th>شماره تلفن</th>
+												<th>استان</th>
+												<th>شهر</th>
+												<th>ویرایش</th>
+												<th>حذف</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="text-center">
+											{% if request.user.addresses.all %}
+												{% for address in request.user.addresses.all %}
+														<td><a href="{{ address.get_absolute_url }}">{{ address.receiver_name }}</a></td>
+														<td>{{ address.receiver_phone_number }}</td>
+														<td>{{ address.state }}</td>
+														<td>{{ address.city }}</td>
+														<td><a href="{{ address.get_absolute_url }}" class="btn btn-secondary">ویرایش یا نمایش</a></td>
+														<td><a href="{% url 'dashboard:delete_address' address.id %}" class="btn btn-primary w-100">حذف</a></td>
+												{% endfor %}
+											{% else %}
+												<td colspan="6" class="bg-warning text-center">موردی یافت نشد</td>
+											{% endif %}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
